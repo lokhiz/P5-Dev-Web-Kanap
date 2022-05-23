@@ -1,23 +1,42 @@
-//Récupération de l'ID
-const element = document.getElementById('items')
+getProducts()
+creationProducts()
 
-//Récupération des données
-fetch('http://localhost:3000/api/products')
-    .then(response => {
-        if(response.ok) {
-            response.json()
-    .then(data => {
-        for(let i = 0; i <= data.length; i++) {
-            element.innerHTML += `<a href="./product.html?id=${data[i]._id}" id="link">
-                                <article>
-                                <img src="${data[i].imageUrl}" alt="${data[i].altTxt}" id="img">
-                                <h3 class="productName" id="title">${data[i].name}</h3>
-                                <p class="productDescription" id="p">${data[i].description}</p>
-                                </article>
-                            </a>`
-                }
-            })
-        } else {
-            alert('erreur')
+async function getProducts() {
+    let products = await fetch('http://localhost:3000/api/products')
+    return products.json()
+}
+
+async function creationProducts() {
+    let result = await getProducts()
+    .then ((product) => {
+        for (let i = 0; i < product.length; i++) {		
+
+            // Ajout de a
+            let productLink = document.createElement('a')
+            document.querySelector('.items').appendChild(productLink)
+            productLink.href = `product.html?id=${product[i]._id}`
+
+            // Ajout des article
+            let productArticle = document.createElement('article')
+            productLink.appendChild(productArticle)
+
+            // Ajout de l'image
+            let productImg = document.createElement('img')
+            productArticle.appendChild(productImg)
+            productImg.src = product[i].imageUrl
+            productImg.alt = product[i].altTxt
+
+            // Ajout du titre
+            let productName = document.createElement('h3')
+            productArticle.appendChild(productName)
+            productName.classList.add('productName')
+            productName.innerHTML = product[i].name
+
+            // Ajout de 'p'
+            let productDescription = document.createElement('p')
+            productArticle.appendChild(productDescription)
+            productDescription.classList.add('productName')
+            productDescription.innerHTML = product[i].description
         }
     })
+}

@@ -1,19 +1,6 @@
-const data = [
-    {
-      name: "Kindle",
-      price: 70
-    },
-    {
-      name: "Cool Lamp",
-      price: 15
-    },
-    {
-      name: "Mirror",
-      price: 25
-    }
-  ]
-// Récupération de balise
+// Récupération des balises
 const section = document.getElementById('cart__items')
+const deleteItem = document.getElementsByClassName('deleteItem')
 
 // Chaîne de caractères en JavaScript object
 let cart = JSON.parse(localStorage.getItem('cart'))
