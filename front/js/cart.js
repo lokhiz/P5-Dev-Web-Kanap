@@ -1,6 +1,24 @@
 // Récupération des balises
 const section = document.getElementById('cart__items')
 const deleteItem = document.getElementsByClassName('deleteItem')
+for(let i = 0 ; i < deleteItem.length; i++){
+  let button = deleteItem[i]
+  button.addEventListener('click', () => {
+    let buttonClicked = event.target
+    buttonClicked.parentElement.parentElement.parentElement.parentElement.remove()
+    updateCartTotal()
+  })
+}
+
+// A REPRENDRE
+
+// function updateCartTotal(){
+//   let cartItemContainer = document.getElementById('cart__items')[0]
+//   let cartRows = cartItemContainer.getElementsByClassName('cart__item')
+//   for(let i = 0 ; i < cartRows.length; i++){
+//     let cartRow = cartRows[i]
+// //   }
+// }
 
 // Chaîne de caractères en JavaScript object
 let cart = JSON.parse(localStorage.getItem('cart'))

@@ -1,51 +1,38 @@
-const img = document.querySelector('.item__img')
-const title = document.getElementById('title')
-const price = document.getElementById('price')
-const description = document.getElementById('description')
-const colors = document.getElementById('colors')
-const addToCart = document.getElementById('addToCart')
-const quantity = document.getElementById('quantity')
-localStorage.clear()
+//Récupération de l'id via les paramètres de l'url
+const urlProduct = new URL(window.location.href).searchParams.get('id')
 
-fetch('http://localhost:3000/api/products')
-    .then(res => {
-        if(res.ok) {
-            res.json().then(data => {
+//Récupération des sélecteurs
+let imageProduct = document.querySelector('.item__img')
+let img = document.createElement('img')
+imageProduct.appendChild(img)
+let title = document.getElementById('title')
+let price = document.getElementById('price')
+let description = document.getElementById('description')
+let colors = document.getElementById('colors')
+let addToCart = document.getElementById('addToCart')
 
-                let params = new URLSearchParams(document.location.search)
-                let id = params.get('id')
-                for(let i = 0; i <= data.length; i++) {
-                    if(id == data[i]._id) {
-                        img.innerHTML = `<img src="${data[i].imageUrl}" alt="${data[i].altTxt}">`
-                        title.innerHTML = data[i].name
-                        price.innerHTML = data[i].price
-                        description.innerHTML = data[i].description
-                        data[i].colors.forEach(color => colors.innerHTML += `<option value="">${color}</option>`)
-                    }
+// Récupération de l'article grace à l'id + affichage des données de ce dernier
+async function getArticle() {
+    await fetch('http://localhost:3000/api/products/' + urlProduct)
+    .then((response) => response.json())
+    .then(product => {
+        img.setAttribute('src', product.imageUrl)
+        img.setAttribute('alt', product.altTxt)
+        title.innerHTML = product.name
+        price.innerHTML = product.price
+        description.innerHTML = product.description
+        document.title = product.name
 
-                        quantity.addEventListener('change', (e) => {
-                            let newValue = parseInt(e.target.value)
-                            quantity.setAttribute('value', newValue)
-                        })
-                        newValue = 0
-                        addToCart.addEventListener('click', (e) => {
-                            let cart = JSON.parse(localStorage.getItem('cart')) || []
-                            let chosenColor = colors.options[colors.selectedIndex].text
-                            const itemExists = (item) => item.name == newItem.name
-                            let newItem = {
-                                image: data[i].imageUrl,
-                                name: data[i].name,
-                                price: data[i].price,
-                                color: chosenColor,
-                                quantity: newValue
-                            }
-                            cart.push(newItem)
-                            localStorage.setItem('cart', JSON.stringify(cart))
-                            console.log(JSON.parse(localStorage.getItem('cart')))
-                        })
-                }
-            })
-        } else {
-            alert('erreur')
+        for (let i = 0; i < product.colors.length; i++) {
+            let color = document.createElement('option')
+            color.setAttribute('value', product.colors[i])
+            color.innerHTML = product.colors[i]
+            colors.appendChild(color)
         }
     })
+}
+
+getArticle()
+
+// Ajouter un article au panier
+
