@@ -5,13 +5,13 @@ async function getProducts() {
 getProducts()
  async function creationProducts() {
     let result = await getProducts()
-    .then ((product) => {
+    .then (product => {
         for (let i = 0; i < product.length; i++) {
             // Ajout de a
             let productLink = document.createElement('a')
-            document.querySelector('.items').appendChild(productLink)
+            document.getElementById('items').appendChild(productLink)
             productLink.href = `product.html?id=${product[i]._id}`
-            // Ajout des articles
+            // Ajout de l'articles
             let productArticle = document.createElement('article')
             productLink.appendChild(productArticle)
             // Ajout de l'image
