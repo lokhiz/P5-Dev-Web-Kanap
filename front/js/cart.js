@@ -135,7 +135,98 @@ function changeQuantity(){
       let quantityChosenToChange = cart[i].quantity
       let quantityValueToChange = quantityChange[i].valueAsNumber
 
-      let quantityChanged
+      let quantityChanged = cart.find((element) => element.quantityValueToChange != quantityChosenToChange)
+      quantityChanged.quantity = quantityValueToChange
+      cart[i].quantity = quantityChanged.quantity
+
+      localStorage.setItem('cart', JSON.stringify(cart))
+
+      location.reload()
     })
   }
 }
+
+changeQuantity()
+
+
+function formWithRegex(){
+  // Ajout des Regex
+  let form = document.querySelector('.cart__order__form')
+
+  // Regex
+  let emailRegExp = new RegExp('^[a-zA-Z0-9.-_]+[@]{1}[a-zA-Z0-9.-_]+[.]{1}[a-z]{2,10}$')
+  let charRegExp = new RegExp('^[a-zA-Z ,."-]+$')
+  let addressRegExp = new RegExp('^[0-9]{1,3}(?:(?:[,. ]){1}[-a-zA-Zàâäéèêëïîôöùûüç]+)+')
+
+  // Modification prénom
+  form.firstName.addEventListener('change', function(){
+      validFirstName(this)
+  })
+  // Modification nom de famille
+  form.lastName.addEventListener('change', function(){
+      validLastName(this)
+  })
+  // Modification adresse
+  form.address.addEventListener('change', function(){
+      validAddress(this)
+  })
+  // Modification ville
+  form.city.addEventListener('change', function(){
+      validCity(this)
+  })
+  // Modification email
+  form.email.addEventListener('change', function(){
+      validEmail(this)
+  })
+
+  // Validation prénom
+  const validFirstName = function(inputFirstName){
+      let firstNameErrorMsg = inputFirstName.nextElementSibling
+      if (charRegExp.test(inputFirstName.value)){
+          
+      } else {
+          firstNameErrorMsg.innerHTML = 'Veuillez renseigner ce champ.'
+      }
+  }
+
+  // Validation nom
+  const validLastName = function(inputLastName){
+      let lastNameErrorMsg = inputLastName.nextElementSibling
+      if (charRegExp.test(inputLastName.value)){
+          lastNameErrorMsg.innerHTML = ''
+      } else {
+          lastNameErrorMsg.innerHTML = 'Veuillez renseigner ce champ.'
+      }
+  }
+
+  // Validation adresse
+  const validAddress = function(inputAddress){
+      let addressErrorMsg = inputAddress.nextElementSibling
+      if (addressRegExp.test(inputAddress.value)){
+          addressErrorMsg.innerHTML = ''
+      } else {
+          addressErrorMsg.innerHTML = 'Veuillez renseigner ce champ.'
+      }
+  }
+
+  // Validation ville
+  const validCity = function(inputCity){
+      let cityErrorMsg = inputCity.nextElementSibling
+      if (charRegExp.test(inputCity.value)){
+          cityErrorMsg.innerHTML = ''
+      } else {
+          cityErrorMsg.innerHTML = 'Veuillez renseigner ce champ.'
+      }
+  }
+
+  // Validation email
+  const validEmail = function(inputEmail){
+      let emailErrorMsg = inputEmail.nextElementSibling
+      if (emailRegExp.test(inputEmail.value)){
+          emailErrorMsg.innerHTML = ''
+      } else {
+          emailErrorMsg.innerHTML = 'Veuillez renseigner votre email.'
+      }
+  }
+  }
+formWithRegex()

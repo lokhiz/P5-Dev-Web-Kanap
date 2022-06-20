@@ -41,7 +41,7 @@ function addToCart(){
     let color = document.getElementById('colors')
     let quantity = document.getElementById('quantity')
     // Condition pour la quantité, obligé de saisir entre 1 et 100 et la quantité et la couleur différents de 0
-    if(quantity.value >= 1 && quantity.value <= 100 && quantity.value != 0 && color.value != 0){
+    if(quantity.value >= 1 && quantity.value <= 100 && color.value != 0){
         if(localStorage.getItem('cart')){
 
             let product = JSON.parse(localStorage.getItem('cart'))
