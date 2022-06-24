@@ -230,3 +230,45 @@ function formWithRegex(){
   }
   }
 formWithRegex()
+
+function postForm() {
+  const order = document.getElementById('order')
+  order.addEventListener('click', (event) => {
+  event.preventDefault()
+
+  const contact = {
+    firstName : document.getElementById('firstName').value,
+    lastName : document.getElementById('lastName').value,
+    address : document.getElementById('address').value,
+    city : document.getElementById('city').value,
+    email : document.getElementById('email').value
+  }
+
+  let products = []
+  for (let i = 0; i < cart.length; i++) {
+      products.push(cart[i].id)
+  }
+  console.log(products)
+
+  const sendFormData = {
+    contact,
+    products,
+  }  
+
+  const options = {
+    method: 'POST',
+    body: JSON.stringify(sendFormData),
+    headers: { 
+      'Content-Type': 'application/json',
+    }
+  };
+
+  fetch("http://localhost:3000/api/products/order", options)
+      .then(response => response.json())
+      .then(data => {
+      localStorage.setItem('orderId', data.orderId)
+      document.location.href = 'confirmation.html?id='+ data.orderId
+    })
+  })
+}
+postForm()
