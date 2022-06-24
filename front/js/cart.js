@@ -125,23 +125,29 @@ function totalPrice(){
 
 totalPrice()
 
-function changeQuantity(){
-  let quantityChange = document.querySelectorAll('.itemQuantity')
+function changeQuantity() {
+  let itemQtt = document.querySelectorAll('.itemQuantity')
 
-  for (let i = 0; i < quantityChange.length; i++){
-    quantityChange[i].addEventListener('change', (e) => {
-      e.preventDefault()
+  for (let i = 0; i < itemQtt.length; i++) {
+    itemQtt[i].addEventListener('change', (e) => {
 
-      let quantityChosenToChange = cart[i].quantity
-      let quantityValueToChange = quantityChange[i].valueAsNumber
+    e.preventDefault()
 
-      let quantityChanged = cart.find((element) => element.quantityValueToChange != quantityChosenToChange)
-      quantityChanged.quantity = quantityValueToChange
-      cart[i].quantity = quantityChanged.quantity
+    let itemNewQtt = itemQtt[i].value
 
-      localStorage.setItem('cart', JSON.stringify(cart))
+    const newLocalStorage = {
+      id: cart[i].id,
+      img: cart[i].img,
+      altImg: cart[i].altImg,
+      name: cart[i].name,
+      color: cart[i].color,
+      price: cart[i].price,   
+      quantity: parseInt(itemNewQtt),
+    }
 
-      location.reload()
+    cart[i] = newLocalStorage
+    localStorage.setItem('cart', JSON.stringify(cart))
+    location.reload()
     })
   }
 }
