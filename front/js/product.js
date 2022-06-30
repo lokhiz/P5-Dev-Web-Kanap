@@ -40,6 +40,7 @@ function addToCart(){
     // On récupère les élément avec les id
     let color = document.getElementById('colors')
     let quantity = document.getElementById('quantity')
+
     // Condition pour la quantité, obligé de saisir entre 1 et 100 et la quantité et la couleur différents de 0
     if(quantity.value >= 1 && quantity.value <= 100 && color.value != 0){
         if(localStorage.getItem('cart')){
@@ -65,7 +66,6 @@ function addToCart(){
                 let quantity = document.getElementById('quantity').value
                 let imgProduct = img.src
                 let altImg = img.alt
-                let price = document.getElementById('price').textContent
 
                 let productObject = {
                     id: idProduct,
@@ -74,7 +74,6 @@ function addToCart(){
                     quantity: parseInt(quantity),
                     img: imgProduct,
                     altImg: altImg,
-                    price: parseInt(price),
                 }
 
                 product.push(productObject)
@@ -90,7 +89,6 @@ function addToCart(){
             let quantity = document.getElementById('quantity').value
             let imgProduct = img.src
             let altImg = img.alt
-            let price = document.getElementById('price').textContent
 
             let productObject = {
                 id: idProduct,
@@ -99,7 +97,6 @@ function addToCart(){
                 quantity: parseInt(quantity),
                 img: imgProduct,
                 altImg: altImg,
-                price: parseInt(price),
             }
             productCart.push(productObject)
             let objectProduct = JSON.stringify(productCart)

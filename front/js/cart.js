@@ -3,8 +3,10 @@ const section = document.getElementById('cart__items')
 const totalQuantity = document.getElementById('totalQuantity')
 const deleteItemButton = document.getElementsByClassName('deleteItem')
 
+
 // Récupération du panier
 let cart = JSON.parse(localStorage.getItem('cart'))
+
 
 for(let i = 0; i < cart.length; i++){
 
@@ -58,7 +60,13 @@ for(let i = 0; i < cart.length; i++){
   // Ajout du prix
   let productPrice = document.createElement('price')
   productItemContentTitlePrice.appendChild(productPrice)
-  productPrice.innerHTML = cart[i].price + '€'
+  fetch('http://localhost:3000/api/products')
+    .then(response => response.json())
+    .then(product => {
+      let foundId = product.find(item => item._id == cart[i].id)
+      let foundPrice = foundId.price
+      productPrice.innerHTML = foundPrice + ' €'
+  })
 
   // Ajout de la quantité
   let productQuantityText = document.createElement('p')
@@ -116,11 +124,16 @@ function totalPrice(){
   totalPrice = 0
 
   for(let i = 0; i < productLength; i++){
-    totalPrice += (productQuantity[i].valueAsNumber * cart[i].price)
+    fetch('http://localhost:3000/api/products')
+      .then(response => response.json())
+      .then(product => {
+        let foundId = product.find(item => item._id == cart[i].id)
+        let foundPrice = foundId.price
+        totalPrice += (productQuantity[i].valueAsNumber * foundPrice)
+        let productTotalPrice = document.getElementById('totalPrice')
+        productTotalPrice.innerHTML = totalPrice
+    })
   }
-
-  let productTotalPrice = document.getElementById('totalPrice')
-  productTotalPrice.innerHTML = totalPrice
 }
 
 totalPrice()
@@ -141,7 +154,6 @@ function changeQuantity() {
       altImg: cart[i].altImg,
       name: cart[i].name,
       color: cart[i].color,
-      price: cart[i].price,   
       quantity: parseInt(itemNewQtt),
     }
 
@@ -189,7 +201,7 @@ function formWithRegex(){
   const validFirstName = function(inputFirstName){
       let firstNameErrorMsg = inputFirstName.nextElementSibling
       if (charRegExp.test(inputFirstName.value)){
-          
+          firstNameErrorMsg.innerHTML = ''
       } else {
           firstNameErrorMsg.innerHTML = 'Veuillez renseigner ce champ.'
       }
@@ -234,7 +246,7 @@ function formWithRegex(){
           emailErrorMsg.innerHTML = 'Veuillez renseigner votre email.'
       }
   }
-  }
+}
 formWithRegex()
 
 function postForm() {
@@ -267,7 +279,7 @@ function postForm() {
     headers: { 
       'Content-Type': 'application/json',
     }
-  };
+  }
 
   fetch("http://localhost:3000/api/products/order", options)
       .then(response => response.json())
